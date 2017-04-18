@@ -1,4 +1,4 @@
-<div class="apidocDiv">
+<html><head></head><body><div class="apidocDiv">
 <style>
 /*csslint
 */
@@ -47,17 +47,10 @@
 }
 </style>
 <h1>api documentation for
-    <a
-
-        href="https://github.com/mweibel/connect-session-sequelize"
-
-    >connect-session-sequelize (v4.1.0)</a>
+    <a href="https://github.com/mweibel/connect-session-sequelize">connect-session-sequelize (v4.1.0)</a>
 </h1>
 <h4>Session store for connect-session using sequelize</h4>
-<div class="apidocSectionDiv"><a
-    href="#apidoc.tableOfContents"
-    id="apidoc.tableOfContents"
-><h1>table of contents</h1></a><ol>
+<div class="apidocSectionDiv"><a href="#apidoc.tableOfContents" id="apidoc.tableOfContents"><h1>table of contents</h1></a><ol>
 
     <li class="apidocModuleLi"><a href="#apidoc.module.connect-session-sequelize">module connect-session-sequelize</a><ol>
 
@@ -98,7 +91,7 @@
   function SequelizeStore (options) {
     this.options = options = options || {}
     if (!options.db) {
-      throw new SequelizeStoreException(&#x27;Database connection is required&#x27;)
+      throw new SequelizeStoreException('Database connection is required')
     }
 
     for (var key in defaultOptions) {
@@ -113,13 +106,13 @@
 
     // Check if specific table should be used for DB connection
     if (options.table) {
-      debug(&#x27;Using table: %s for sessions&#x27;, options.table)
+      debug('Using table: %s for sessions', options.table)
       // Get Specifed Table from Sequelize Object
       this.sessionModel = options.db[options.table] || options.db.models[options.table]
     } else {
       // No Table specified, default to ./model
-      debug(&#x27;No table specified, using default table.&#x27;)
-      this.sessionModel = options.db.import(path.join(__dirname, &#x27;model&#x27;))
+      debug('No table specified, using default table.')
+      this.sessionModel = options.db.import(path.join(__dirname, 'model'))
     }
   }
 
@@ -130,38 +123,38 @@
   }
 
   SequelizeStore.prototype.get = function getSession (sid, fn) {
-    debug(&#x27;SELECT &#x22;%s&#x22;&#x27;, sid)
-    return this.sessionModel.find({where: {&#x27;sid&#x27;: sid}}).then(function (session) {
+    debug('SELECT "%s"', sid)
+    return this.sessionModel.find({where: {'sid': sid}}).then(function (session) {
       if (!session) {
-        debug(&#x27;Did not find session %s&#x27;, sid)
+        debug('Did not find session %s', sid)
         return null
       }
-      debug(&#x27;FOUND %s with data %s&#x27;, session.sid, session.data)
+      debug('FOUND %s with data %s', session.sid, session.data)
 
       return JSON.parse(session.data)
     }).asCallback(fn)
   }
 
   SequelizeStore.prototype.set = function setSession (sid, data, fn) {
-    debug(&#x27;INSERT &#x22;%s&#x22;&#x27;, sid)
+    debug('INSERT "%s"', sid)
     var stringData = JSON.stringify(data)
     var expires
 
-    if (data.cookie &#x26;&#x26; data.cookie.expires) {
+    if (data.cookie &amp;&amp; data.cookie.expires) {
       expires = data.cookie.expires
     } else {
       expires = new Date(Date.now() + this.options.expiration)
     }
 
-    var defaults = {&#x27;data&#x27;: stringData, &#x27;expires&#x27;: expires}
+    var defaults = {'data': stringData, 'expires': expires}
     if (this.options.extendDefaultFields) {
       defaults = this.options.extendDefaultFields(defaults, data)
     }
 
-    return this.sessionModel.findCreateFind({where: {&#x27;sid&#x27;: sid}, defaults: defaults}).spread(function sessionCreated (session) {
+    return this.sessionModel.findCreateFind({where: {'sid': sid}, defaults: defaults}).spread(function sessionCreated (session) {
       var changed = false
       Object.keys(defaults).forEach(function (key) {
-        if (key === &#x27;data&#x27;) {
+        if (key === 'data') {
           return
         }
 
@@ -183,26 +176,26 @@
   }
 
   SequelizeStore.prototype.touch = function touchSession (sid, data, fn) {
-    debug(&#x27;TOUCH &#x22;%s&#x22;&#x27;, sid)
+    debug('TOUCH "%s"', sid)
     var expires
 
-    if (data.cookie &#x26;&#x26; data.cookie.expires) {
+    if (data.cookie &amp;&amp; data.cookie.expires) {
       expires = data.cookie.expires
     } else {
       expires = new Date(Date.now() + this.options.expiration)
     }
 
-    return this.sessionModel.update({&#x27;expires&#x27;: expires}, {where: {&#x27;sid&#x27;: sid}}).then(function (rows) {
+    return this.sessionModel.update({'expires': expires}, {where: {'sid': sid}}).then(function (rows) {
       return rows
     }).asCallback(fn)
   }
 
   SequelizeStore.prototype.destroy = function destroySession (sid, fn) {
-    debug(&#x27;DESTROYING %s&#x27;, sid)
-    return this.sessionModel.find({where: {&#x27;sid&#x27;: sid}}).then(function foundSession (session) {
-      // If the session wasn&#x27;t found, then consider it destroyed already.
+    debug('DESTROYING %s', sid)
+    return this.sessionModel.find({where: {'sid': sid}}).then(function foundSession (session) {
+      // If the session wasn't found, then consider it destroyed already.
       if (session === null) {
-        debug(&#x27;Session not found, assuming destroyed %s&#x27;, sid)
+        debug('Session not found, assuming destroyed %s', sid)
         return null
       }
       return session.destroy()
@@ -214,14 +207,14 @@
   }
 
   SequelizeStore.prototype.clearExpiredSessions = function clearExpiredSessions (fn) {
-    debug(&#x27;CLEARING EXPIRED SESSIONS&#x27;)
-    return this.sessionModel.destroy({where: {&#x27;expires&#x27;: {lt: new Date()}}}).asCallback(fn)
+    debug('CLEARING EXPIRED SESSIONS')
+    return this.sessionModel.destroy({where: {'expires': {lt: new Date()}}}).asCallback(fn)
   }
 
   SequelizeStore.prototype.startExpiringSessions = function startExpiringSessions () {
-    // Don&#x27;t allow multiple intervals to run at once.
+    // Don't allow multiple intervals to run at once.
     this.stopExpiringSessions()
-    if (this.options.checkExpirationInterval &#x3e; 0) { ...</pre></li>
+    if (this.options.checkExpirationInterval &gt; 0) { ...</pre></li>
     <li>example usage<pre class="apidocCodePre">n/a</pre></li>
     </ul>
 
@@ -249,3 +242,4 @@
     ]
 </div>
 </div>
+</body></html>

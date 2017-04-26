@@ -1,6 +1,6 @@
 # npmdoc-connect-session-sequelize
 
-#### api documentation for  [connect-session-sequelize (v4.1.0)](https://github.com/mweibel/connect-session-sequelize)  [![npm package](https://img.shields.io/npm/v/npmdoc-connect-session-sequelize.svg?style=flat-square)](https://www.npmjs.org/package/npmdoc-connect-session-sequelize) [![travis-ci.org build-status](https://api.travis-ci.org/npmdoc/node-npmdoc-connect-session-sequelize.svg)](https://travis-ci.org/npmdoc/node-npmdoc-connect-session-sequelize)
+#### basic api documentation for  [connect-session-sequelize (v4.1.0)](https://github.com/mweibel/connect-session-sequelize)  [![npm package](https://img.shields.io/npm/v/npmdoc-connect-session-sequelize.svg?style=flat-square)](https://www.npmjs.org/package/npmdoc-connect-session-sequelize) [![travis-ci.org build-status](https://api.travis-ci.org/npmdoc/node-npmdoc-connect-session-sequelize.svg)](https://travis-ci.org/npmdoc/node-npmdoc-connect-session-sequelize)
 
 #### Session store for connect-session using sequelize
 
@@ -78,7 +78,8 @@
         "lint": "standard",
         "test": "mocha ./test"
     },
-    "version": "4.1.0"
+    "version": "4.1.0",
+    "bin": {}
 }
 ```
 

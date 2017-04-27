@@ -1,4 +1,4 @@
-npmdoc-connect-session-sequelize@0.0.2 /home/travis/build/npmdoc/node-npmdoc-connect-session-sequelize
+npmdoc-connect-session-sequelize@2017.4.26 /home/travis/build/npmdoc/node-npmdoc-connect-session-sequelize
 └─┬ sequelize@3.30.4 
   ├── bluebird@3.5.0 
   ├── depd@1.1.0 
